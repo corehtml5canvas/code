@@ -1,0 +1,256 @@
+/*
+ * Copyright (C) 2012 David Geary. This code is from the book
+ * Core HTML5 Canvas, published by Prentice-Hall in 2012.
+ *
+ * License:
+ *
+ * Permission is hereby granted, free of charge, to any person 
+ * obtaining a copy of this software and associated documentation files
+ * (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge,
+ * publish, distribute, sublicense, and/or sell copies of the Software,
+ * and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * The Software may not be used to create training material of any sort,
+ * including courses, books, instructional videos, presentations, etc.
+ * without the express written consent of David Geary.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+#loadingToast {
+   padding: 20px;
+   position: absolute;
+   left: 50px;
+   top: 180px;
+   width: 450px;
+   height: 400px;
+   display: block;
+}
+
+#loadingToast .title {
+   padding-left: 177px;
+   font: 16px Arial;
+}
+
+#loadingToast p {
+   margin-left: 10px;
+   margin-right: 10px;
+   color: black;
+}
+      
+#highScoreParagraph {
+   position: absolute;
+   left: 150px;
+   top: -50px;
+   color: red;
+   font: 8em fantasy;
+   margin-left: 70px;
+   margin-bottom: 50px;
+}
+      
+#highScoreToast {
+   position: absolute;
+   left: 0px;
+   top: 200px;
+   color: cornflowerblue;
+   margin-left: 150px;
+   margin-top: 20px;
+   font: 18px fantasy;
+}
+
+#livesCanvas {
+   background: rgba(255,255,255,0.3);
+   position: absolute;
+   left: 475px;
+   top: 25px;
+   border: thin solid rbga(100,140,230,0.8);
+   -webkit-box-shadow: rgba(100,140,230,0.5) 2px 2px 6px;
+   -moz-box-shadow: rgba(100,140,230,0.5) 2px 2px 6px;
+   box-shadow: rgba(100,140,230,0.5) 2px 2px 6px;
+   -o-box-shadow: rgba(100,140,230,0.5) 2px 2px 6px;
+}
+      
+#gameCanvas {
+	margin: 20px;
+   background: rgba(120,168,249,0.7);
+	position: absolute;
+	left: 0px;
+	top: 0px;
+   -webkit-box-shadow: rgba(100,100,100,0.5) 4px 4px 8px;
+   -moz-box-shadow: rgba(100,140,230,0.5) 2px 2px 6px;
+   box-shadow: rgba(100,140,230,0.5) 2px 2px 6px;
+   -o-box-shadow: rgba(100,140,230,0.5) 2px 2px 6px;
+   border: thin solid cornflowerblue;
+}
+
+.floatingControls {
+   background: rgba(0, 0, 0, 0.1);
+   border: thin solid skyblue;
+   -webkit-box-shadow: rgba(0,0,0,0.3) 2px 2px 4px;
+   -moz-box-shadow: rgba(100,140,230,0.5) 2px 2px 6px;
+   box-shadow: rgba(100,140,230,0.5) 2px 2px 6px;
+   -o-box-shadow: rgba(100,140,230,0.5) 2px 2px 6px;
+   position: absolute;
+}   
+
+.floatingControls a {
+   font-size: 1.5em;
+   text-decoration: none;
+   color: rgba(255,255,0,0.6);
+}
+ 
+.floatingControls a:hover {
+   color: rgba(255,255,0,1.0);
+}
+
+#instructionsLink {
+   color: cornflowerblue;
+   text-decoration: none;
+}
+
+#instructionsLink:hover {
+   color: rgba(255,255,0,1.0);
+}
+
+#instructions p.title {
+   font-size: 1.5em;
+   color: blue;
+}
+      
+#instructions {
+   margin-left: 60px;
+   margin-top: 50px;
+   padding-left: 20px;
+   padding-right: 20px;
+   width: 700px;
+   height: 370px;
+   -webkit-box-shadow: rgba(0,0,0,0.3) 4px 4px 8px;
+   -moz-box-shadow: rgba(100,140,230,0.5) 2px 2px 6px;
+   box-shadow: rgba(100,140,230,0.5) 2px 2px 6px;
+   -o-box-shadow: rgba(100,140,230,0.5) 2px 2px 6px;
+   color: rgba(0, 0, 255, 0.8);
+   background: rgba(255, 255, 255, 0.8);
+}
+
+#instructionsOkayButtonDiv {
+   left: 0px;
+   width: 100%;
+   text-align: center; 
+}
+
+#instructionsOkayButton {
+   margin-top: 30px;
+}
+
+.toast {
+   background: rgba(255, 255, 255, 0.7);
+   border: thin solid skyblue;
+   -webkit-box-shadow: rgba(0,0,0,0.3) 2px 2px 4px;
+   -moz-box-shadow: rgba(100,140,230,0.5) 2px 2px 6px;
+   box-shadow: rgba(100,140,230,0.5) 2px 2px 6px;
+   -o-box-shadow: rgba(100,140,230,0.5) 2px 2px 6px;
+   position: absolute;
+   display: none;
+}
+
+#pausedToast {
+   padding: 5px 40px 20px 40px;
+   margin-left: 175px;
+   margin-top: 100px;
+   color: blue;
+}
+
+#pausedToast p {
+   color: blue;
+}
+
+#pausedToast p.title {
+   font-size: 1.50em;
+   color: blue;
+}
+
+#scoreToast {
+   background: rgba(255,255,255,0.5);
+   left: 25px;
+   top: 25px;
+   padding: 5px; 
+   font-size: 1.25em;
+   color: rgba(0,0,250,1.0);
+}
+
+div .title { 
+   color: blue;
+}
+
+div p { 
+   color: blue;
+}
+
+div a { 
+   text-decoration: none;
+   color: cornflowerblue;
+}
+
+p.title {
+   font-size: 1.5em;
+}
+
+#gameOverToast {
+   padding-left: 30px;
+   padding-right: 30px;
+   padding-bottom: 10px;
+   margin-left: 203px;
+   margin-top: 100px;
+   text-align: center;
+   display: none;
+}
+
+#highScoreList {
+   color: rgba(0,0,255,0.6);
+}
+
+#previousHighScoresTitle {
+   margin-top: 50px;
+}
+
+#loseLifeToast {
+   padding: 10px;
+   position: absolute;
+   left: 250px;
+   top: 300px;
+}
+
+#loadButtonSpan {
+   position: absolute;
+   left: 200px;
+   padding-top: 20px;
+}
+      
+.blurb {
+   padding: 10px;
+   display: block;
+   font: 12px Arial;
+}
+
+#progressDiv {
+   padding-left: 60px;
+   padding-top: 45px;
+}
+
+#loadingMessage {
+   display: none;
+   font: 13px Helvetica;
+   padding-left: 20px;
+} 

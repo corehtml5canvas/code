@@ -1,0 +1,153 @@
+<!--
+- Copyright (C) 2012 David Geary. This code is from the book
+- Core HTML5 Canvas, published by Prentice-Hall in 2012.
+-
+- License:
+-
+- Permission is hereby granted, free of charge, to any person 
+- obtaining a copy of this software and associated documentation files
+- (the "Software"), to deal in the Software without restriction,
+- including without limitation the rights to use, copy, modify, merge,
+- publish, distribute, sublicense, and/or sell copies of the Software,
+- and to permit persons to whom the Software is furnished to do so,
+- subject to the following conditions:
+-
+- The above copyright notice and this permission notice shall be
+- included in all copies or substantial portions of the Software.
+-
+- The Software may not be used to create training material of any sort,
+- including courses, books, instructional videos, presentations, etc.
+- without the express written consent of David Geary.
+-
+- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+- OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ungame</title>
+    <link rel='stylesheet' type='text/css' href='ungame.css'/>
+  </head>
+
+   <body>
+      <!-- Game canvas........................................................... -->
+
+      <canvas id='gameCanvas' width='550' height='750'>
+         Canvas not supported
+      </canvas>
+
+      <!-- Loading Toast......................................................... -->
+
+      <div id='loadingToast' class='toast'>
+         <span id='loadingToastTitle' class='title'>The Ungame</span>
+
+         <span id='loadingToastBlurb' class='blurb'>
+            <p>This game is an ungame, sort of like the undead: The undead are not
+               really dead, and this is not really a game; however, it implements
+               essential functionality pertient to most games.</p>
+
+            <p>The ungame comes with:</p>
+
+            <ul>
+               <li>This loading screen</li>
+               <li>Asset management</li>
+               <li>Music and Sounds</li>
+               <li>A scrolling background with parallax</li>
+               <li>Lives indicator (upper right corner)</li>
+               <li>Score indicator (appears when the ungame starts)</li>
+               <li>High score functionality</li>
+               <li>Key processing (including throttling)</li>
+               <li>Pause (press 'p' key once the ungame starts)</li>
+               <li>Auto-Pause (when the window loses focus)</li>
+            </ul>
+
+            <p>The ungame is implemented with a
+               simple game engine (~200 lines of JavaScript).</p> 
+         </span>
+
+         <span id='loadButtonSpan'>
+            <input type='button' id='loadButton' value='Load Game...' autofocus='true'/>
+            <span id='loadingMessage'>Loading...</span>
+         </span>
+         
+         <div id='progressDiv'></div>
+      </div>
+
+      <!-- Scores................................................................ -->
+
+      <div id='scoreToast' class='toast'></div>
+
+      <!-- Lives................................................................. -->
+
+      <canvas id='livesCanvas' width='90' height='40'>
+         Canvas not supported
+      </canvas>
+
+      <!-- Paused................................................................ -->
+
+      <div id='pausedToast' class='toast'>
+        <p class='title' style='margin-left: 45px;'>Paused</p>
+        <p>Click anywhere to start</p>
+      </div>    
+      
+      <!-- Game Over............................................................. -->
+
+      <div id='gameOverToast' class='toast'>
+         <p class='title'>Game Over</p><br/>
+         <p><input id='clearHighScoresCheckbox' type='checkbox'/> clear high scores</p>
+         <input id='newGameButton' type='button' value='new game' autofocus='true'/>
+      </div>
+
+      <!-- High scores........................................................... -->
+
+      <p id='highScoreParagraph'></p>
+
+      <div id='highScoreToast' width='400' style='display: none'>
+        <p class='title'>High score!</p>
+
+        <p>What's your name?</p>
+
+        <input id='nameInput' type='text' autofocus='true'>
+        <input id='addMyScoreButton' type='button' value='add my score' disabled='true'>
+        <input id='newGameFromHighScoresButton' type='button' value='new game'>
+
+        <p class='title' id='previousHighScoresTitle' display='none'>
+          Previous High Scores
+        </p>
+
+        <!-- The following ordered list is populated by JavaScript in ungame.js -->
+        <ol id='highScoreList'></ol>
+      </div>
+
+      <!-- Lose Life.............................................................. -->
+
+      <div id='loseLifeToast' class='toast'>
+         <input id='loseLifeButton' type='button' value='Lose a life' autofocus='true'/>
+      </div>
+      
+      <!-- Sounds................................................................. -->
+
+      <audio id='pop' preload='auto'>
+         <source src='sounds/pop.ogg' type='audio/ogg'>
+         <source src='sounds/pop.mp3' type='audio/mp3'>
+      </audio>
+
+      <audio id='whoosh' preload='auto'>
+         <source src='sounds/whoosh.ogg' type='audio/ogg'>
+         <source src='sounds/whoosh.mp3' type='audio/mp3'>
+      </audio>
+
+    <script src = '../../shared/js/requestNextAnimationFrame.js'></script>
+    <script src = '../../shared/js/roundedRectangle.js'></script>
+    <script src = 'progressbar.js'></script>
+    <script src = '../../shared/js/gameEngine.js'></script>
+    <script src = 'ungame.js'></script>
+  </body>
+</html>

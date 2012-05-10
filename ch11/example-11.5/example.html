@@ -1,0 +1,263 @@
+<!--
+- Copyright (C) 2012 David Geary. This code is from the book
+- Core HTML5 Canvas, published by Prentice-Hall in 2012.
+-
+- License:
+-
+- Permission is hereby granted, free of charge, to any person 
+- obtaining a copy of this software and associated documentation files
+- (the "Software"), to deal in the Software without restriction,
+- including without limitation the rights to use, copy, modify, merge,
+- publish, distribute, sublicense, and/or sell copies of the Software,
+- and to permit persons to whom the Software is furnished to do so,
+- subject to the following conditions:
+-
+- The above copyright notice and this permission notice shall be
+- included in all copies or substantial portions of the Software.
+-
+- The Software may not be used to create training material of any sort,
+- including courses, books, instructional videos, presentations, etc.
+- without the express written consent of David Geary.
+-
+- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+- OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html>
+   <head>
+     <title>Paint</title>
+      <meta name='viewport' content='width=device-width, initial-scale=1.0'/>
+      <meta name='apple-mobile-web-app-capable' content='yes'/>
+      <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'/>
+
+      <link rel='apple-touch-startup-image' media='(max-device-width: 480px) and not (-webkit-min-device-pixel-ratio: 2)' href='startup-iphone.png' />
+
+      <!-- 640x920 for retina display -->
+      <link rel='apple-touch-startup-image' media='(max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2)' href='startup-iphone4.png' />
+
+      <!-- iPad Portrait 768x1004 -->
+      <link rel='apple-touch-startup-image' media='(min-device-width: 768px) and (orientation: portrait)' href='startup-iPad-portrait.png' />
+
+      <!-- iPad Landscape 1024x748 -->
+      <link rel='apple-touch-startup-image' media='(min-device-width: 768px) and (orientation: landscape)' href='startup-iPad-landscape.png' />
+
+      <link rel='apple-touch-icon-precomposed' sizes='72x72' href='icon-ipad.png' />
+
+      <style> 
+         body {
+            background: #dddddd;
+         }
+
+         option {
+            padding-right: 5px;
+         }
+         
+         .floatingControls {
+            position: absolute;
+            left: 105px;
+            top: 70px;
+            width: 300px;
+            padding: 20px;
+            border: thin solid rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 200, 0.1);
+            color: blue;
+            font: 14px Arial;
+              -webkit-box-shadow: rgba(0, 0, 0, 0.2) 6px 6px 8px;
+              -moz-box-shadow: rgba(0, 0, 0, 0.2) 6px 6px 8px;
+              box-shadow: rgba(0, 0, 0, 0.2) 6px 6px 8px;
+            display: none;
+         }
+
+         .floatingControls p {
+            margin-top: 0px;
+            margin-bottom: 20px;
+         }
+         
+         #iconCanvas {
+            background: #eeeeef;
+            border: thin solid #aaaaaa;
+            cursor: pointer;
+              -webkit-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 4px;
+              -moz-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 4px;
+              box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 4px;
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+         }
+
+         #drawingCanvas {
+               background: #ffffff;
+               border: thin solid #aaaaaa;
+               cursor: crosshair;
+               margin-left: 10px;
+              -webkit-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 4px;
+              -moz-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 4px;
+              box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 4px;
+            -webkit-border-radius: 12px;
+            -moz-border-radius: 12px;
+            border-radius: 12px;
+         }
+
+         #controls {
+               padding-top: 5px;
+               padding-bottom: 10px;
+               padding-left: 100px;
+         }
+
+         select { margin-right: 15px; }
+
+         @media all and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
+            #controls {
+               padding-top: 10px;
+               padding-bottom: 10px;
+            }
+
+            #drawingCanvas {
+               background: #ffffff;
+               border: thin solid #aaaaaa;
+               cursor: crosshair;
+               margin-left: 10px;
+                 -webkit-box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 4px;
+                 -moz-box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 4px;
+                 box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 4px;
+               -webkit-border-radius: 8px;
+               -moz-border-radius: 8px;
+               border-radius: 8px;
+            }
+         }
+         
+         @media all and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) {
+            #controls {
+               padding-top: 20px;
+               padding-bottom: 10px;
+               padding-left: 85px;
+            }
+
+            #drawingCanvas {
+               background: #ffffff;
+               cursor: crosshair;
+               margin-left: 5px;
+                 -webkit-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 4px;
+                 -moz-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 4px;
+                 box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 4px;
+               -webkit-border-radius: 10px;
+               -moz-border-radius: 10px;
+               border-radius: 10px;
+            }
+
+            #snapshotImageElement {
+               position: absolute;
+               left: 85px;
+               top: 30px;
+               margin: 20px;
+               display: none;
+            }
+         }
+
+         #snapshotButton {
+            margin-left: 150px;
+         }
+
+         #snapshotInstructions {
+            position: absolute;
+            left: 300px;
+            top: 0px;
+            margin-top: 17px;
+            display: none;
+         }
+
+         #keyboard {
+            position: absolute;
+            left: 25px;
+            top: 0px;
+            width: 1000px;
+            height: 0px;
+
+            background: rgba(129, 129, 138, 0.4);
+
+              -webkit-box-shadow: rgba(0, 0, 0, 0.2) 3px 3px 4px;
+              -moz-box-shadow: rgba(0, 0, 0, 0.2) 3px 3px 4px;
+              box-shadow: rgba(0, 0, 0, 0.2) 3px 3px 4px;
+         }
+      </style>
+   </head>
+
+   <body>
+    <div id='controls'>
+       Stroke: <select id='strokeStyleSelect'>
+                        <option value='red'>red</option>
+                        <option value='green'>green</option>
+                        <option value='blue'>blue</option>
+                        <option value='orange'>orange</option>
+                        <option value='cornflowerblue' selected>cornflowerblue</option>
+                        <option value='goldenrod'>goldenrod</option>
+                        <option value='white'>white</option>
+                        <option value='purple'>purple</option>
+                     </select>
+
+       Fill: <select id='fillStyleSelect'>
+                      <option value='red'>red</option>
+                      <option value='rgba(255,0,0,0.5)'>semi-transparent red</option>
+                      <option value='green'>green</option>
+                      <option value='rgba(0,255,0,0.5)'>semi-transparent green</option>
+                      <option value='blue'>blue</option>
+                      <option value='rgba(0,0,255,0.5)'>semi-transparent blue</option>
+                      <option value='orange'>orange</option>
+                      <option value='rgba(255,165,0,0.5)'>semi-transparent orange</option>
+                      <option value='cornflowerblue'>cornflowerblue</option>
+                      <option value='rgba(100,140,230,0.5)'>semi-transparent cornflowerblue</option>
+                      <option value='goldenrod'>goldenrod</option>
+                      <option value='rgba(218,165,32,0.5)' selected>semi-transparent goldenrod</option>
+                      <option value='white'>white</option>
+                      <option value='rgba(255,255,255,0.5)'>semi-transparent white</option>
+                      <option value='purple'>purple</option>
+                      <option value='rgba(255,0,255,0.5)'>semi-transparent purple</option>
+                   </select>
+
+       Line width: <select id='lineWidthSelect'>
+                      <option value='1.0'>1.0</option>
+                      <option value='2.0'>2.0</option>
+                      <option value='3.0'>3.0</option>
+                      <option value='4.0'>4.0</option>
+                      <option value='5.0'>5.0</option>
+                      <option value='6.0'>6.0</option>
+                   </select>
+
+      <input id='eraseAllButton' type='button' value='Erase all'/>
+      <input id='snapshotButton' type='button' value='Take snapshot'/>
+      <span id='snapshotInstructions'>Drag the image to your desktop (or Right-click to save to disk)</span>
+    </div>
+
+    <img id='snapshotImageElement'/>
+    
+    <canvas id='iconCanvas' width='75' height='670'>
+      Canvas not supported
+    </canvas>
+
+    <canvas id='drawingCanvas' width='915' height='670'>
+      Canvas not supported
+    </canvas>
+
+    <div id='keyboard'></div>
+    
+    <div id='curveInstructions' class='floatingControls'>
+      <p>
+      The yellow circle is a control point for the curve. Drag that
+      circle around to change the shape of the curve.
+      </p>
+
+      <input id='curveInstructionsOkayButton' type='button' value='Okay'/>
+      <input id='curveInstructionsNoMoreButton' type='button' value='Do not show this again'/>
+    </div>
+    
+    <script src='keyboard.js'></script>
+    <script src='example.js'></script>
+  </body>
+</html>

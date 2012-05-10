@@ -1,0 +1,140 @@
+<!--
+- Copyright (C) 2012 David Geary. This code is from the book
+- Core HTML5 Canvas, published by Prentice-Hall in 2012.
+-
+- License:
+-
+- Permission is hereby granted, free of charge, to any person 
+- obtaining a copy of this software and associated documentation files
+- (the "Software"), to deal in the Software without restriction,
+- including without limitation the rights to use, copy, modify, merge,
+- publish, distribute, sublicense, and/or sell copies of the Software,
+- and to permit persons to whom the Software is furnished to do so,
+- subject to the following conditions:
+-
+- The above copyright notice and this permission notice shall be
+- included in all copies or substantial portions of the Software.
+-
+- The Software may not be used to create training material of any sort,
+- including courses, books, instructional videos, presentations, etc.
+- without the express written consent of David Geary.
+-
+- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+- OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Poker Pinball</title>
+
+    <style>
+      body {
+         background: skyblue;
+      }
+      
+      #showPolygonsOnlyToast {
+         color: black;
+         position: absolute;
+         top: 20px;
+         left: 10px;
+      }
+
+    </style>
+  </head>
+
+   <body>
+      <link rel='stylesheet' type='text/css' href='pinball.css'/>
+
+      <audio id='ballRolling' preload='auto'>
+         <source src='sounds/ballRolling.ogg' type='audio/ogg'>
+      </audio>
+
+      <audio id='flipper' preload='auto'>
+         <source src='sounds/flipper.ogg' type='audio/ogg'>
+      </audio>
+
+      <audio id='bumper' preload='auto'>
+         <source src='sounds/bumper.ogg' type='audio/ogg'>
+      </audio>
+
+      <audio id='jingle' preload='auto'>
+         <source src='sounds/jingle.ogg' type='audio/ogg'>
+      </audio>
+
+      <!-- Game canvas........................................................... -->
+
+      <canvas id='gameCanvas' width='535' height='936'>
+         Canvas not supported
+      </canvas>
+
+      <div id='readoutToast' id='toast'></div>
+      <div id='showPolygonsOnlyToast' class='toast'>
+         <input type='checkbox' id='showPolygonsOnlyCheckbox'/>
+         Polygons
+      </div>
+      
+      <!-- Loading................................................................ -->
+
+      <div id='loadingToast' class='toast'>
+         <span id='loadingToastTitle' class='title'>Core HTML5 Canvas Pinball</span>
+
+         <div id='loadingMessage'>Loading...</div>
+         <div id='progressDiv'></div>
+      </div>
+
+      <!-- Scores................................................................ -->
+
+      <div id='scoreToast' class='toast'></div>
+
+
+      <!-- Paused................................................................ -->
+
+      <div id='pausedToast' class='toast'>
+        <p class='title'>Paused</p>
+        <p>Click here to start</p>
+      </div>    
+
+      
+      <!-- Game Over............................................................. -->
+
+      <div id='gameOverToast' class='toast'>
+         <p class='title'>Game Over</p><br/>
+         <p><input id='clearHighScoresCheckbox' type='checkbox'/> clear high scores</p>
+         <input id='newGameButton' type='button' value='new game' autofocus='true'/>
+      </div>
+
+      <!-- High scores........................................................... -->
+
+      <p id='highScoreParagraph'></p>
+
+      <div id='highScoreToast' width='300' style='display: none'>
+        <p class='title'>High score!</p>
+        <p>What's your name?</p>
+        <input id='nameInput' type='text' autofocus='true' display='none'>
+        <input id='addMyScoreButton' type='button' value='add my score' disabled='true'>
+        <input id='newGameFromHighScoresButton' type='button' value='new game'>
+
+        <p class='title' id='previousHighScoresTitle' display='none'>Previous High Scores</p>
+        <ol id='highScoreList'>
+        </ol>
+      </div>
+
+      <!-- Lose Life.............................................................. -->
+
+    <script src = 'requestNextAnimationFrame.js'></script>
+    <script src = 'stopwatch.js'></script>
+    <script src = 'animationTimer.js'></script>
+    <script src = 'progressbar.js'></script>
+    <script src = 'sprites.js'></script>
+    <script src = 'gameEngine.js'></script>
+    <script src = 'shapes.js'></script>
+    <script src = 'pinball.js'></script>
+  </body>
+</html>

@@ -1,0 +1,186 @@
+<!--
+- Copyright (C) 2012 David Geary. This code is from the book
+- Core HTML5 Canvas, published by Prentice-Hall in 2012.
+-
+- License:
+-
+- Permission is hereby granted, free of charge, to any person 
+- obtaining a copy of this software and associated documentation files
+- (the "Software"), to deal in the Software without restriction,
+- including without limitation the rights to use, copy, modify, merge,
+- publish, distribute, sublicense, and/or sell copies of the Software,
+- and to permit persons to whom the Software is furnished to do so,
+- subject to the following conditions:
+-
+- The above copyright notice and this permission notice shall be
+- included in all copies or substantial portions of the Software.
+-
+- The Software may not be used to create training material of any sort,
+- including courses, books, instructional videos, presentations, etc.
+- without the express written consent of David Geary.
+-
+- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+- OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html>
+   <head>
+     <title>Magnifying Glass</title>
+      <style> 
+         body {
+            background: -webkit-gradient(radial, 325 50%, 10, 325 50%, 640, from(rgb(195, 175, 140)), to(rgb(254, 232, 214)));
+            background-image: -webkit-radial-gradient(center, circle farthest-side, rgb(195, 175, 140), rgb(254, 232, 214));
+            background-image: -moz-radial-gradient(center, circle farthest-side, rgb(195, 175, 140), rgb(254, 232, 214));
+            background-image: -o-radial-gradient(center, circle farthest-side, rgb(195, 175, 140), rgb(254, 232, 214));
+            background-image: radial-gradient(center, circle farthest-side, rgb(195, 175, 140), rgb(254, 232, 214));
+
+            height: 100%;
+         }
+
+         #backdrop {
+            background: blue;
+         }
+         
+         #controls {
+            position: absolute;
+            left: 60px;
+            top: 0px;
+         }
+
+         @media all and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
+                  #canvas {
+                     position: absolute;
+                     left: 30px;
+                     top: 100px;
+                     -webkit-box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     -moz-box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     border: 1px solid rgb(52, 72, 35);
+                     cursor: pointer;
+                  }
+
+                  #controls {
+                     position: absolute;
+                     left: 60px;
+                     margin-top: 30px;
+                  }
+         }
+
+         @media all and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) {
+                  #canvas {
+                     position: absolute;
+                     left: 35px;
+                     top: 100px;
+                     -webkit-box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     -moz-box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     border: 1px solid rgb(52, 72, 35);
+                     cursor: pointer;
+                  }
+
+                  #controls {
+                     position: absolute;
+                     left: 60px;
+                     margin-top: 30px;
+                  }
+         }
+
+         @media all and (min-device-width: 1025px) {
+                  #canvas {
+                     position: absolute;
+                     top: 60px;
+                     left: 35px;
+                     -webkit-box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     -moz-box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     border: 1px solid rgb(52, 72, 35);
+                     cursor: pointer;
+                  }
+         
+                  #controls {
+                     margin-top: 5px;
+                     position: absolute;
+                     left: 60px;
+                  }
+         }
+
+         #glassSizeSliderDiv {
+            position: absolute;
+            left: 290px;
+            top: -5px;
+            margin-left: 10px;
+            display: inline;
+            width: 200px;
+            height: 37px;
+         }
+
+         #magnificationSliderDiv {
+            position: absolute;
+            left: 30px;
+            top: -5px;
+            margin-left: 10px;
+            display: inline;
+            width: 200px;
+            height: 37px;
+         }
+
+         #glassSizeCanvas {
+            position: absolute;
+            left: 260px;
+         }
+         
+         #scaleOutput {
+            position: absolute;
+            left: -20px;
+            vertical-align: center;
+            color: rgb(52, 72, 35);
+            font: 17px Helvetica;
+            text-shadow: 1px 1px 1px rgb(255,255,255);
+         }
+
+         #image-panning-alpha-span {
+            position: absolute;
+            text-shadow: 1px 1px 1px rgba(200,200,135,0.7);
+         }
+
+         #instructionsButton {
+            position: absolute;
+            left: 790px;
+         }
+         
+         .slider {
+            margin-top: 5px;
+         }
+      </style>
+   </head>
+
+  <body id='body'>
+      <div id='backdrop'>
+           <div id='controls'>
+             <span id='scaleOutput'>1.5</span>
+             <div id='magnificationSliderDiv' class='slider'></div>
+
+              <canvas id='glassSizeCanvas' width='40' height='40'>
+                  Canvas not supported
+              </canvas>
+             <div id='glassSizeSliderDiv' class='slider'></div>
+   
+           </div>
+           
+           <canvas id='canvas' width='955' height='611'>
+              Canvas not supported
+           </canvas>
+      </div>
+
+      <script src='../../shared/js/roundedRectangle.js'></script>
+      <script src='../../shared/js/slider.js'></script>
+      <script src='example.js'></script>
+   </body>
+</html>

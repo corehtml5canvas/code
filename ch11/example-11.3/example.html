@@ -1,0 +1,242 @@
+<!--
+- Copyright (C) 2012 David Geary. This code is from the book
+- Core HTML5 Canvas, published by Prentice-Hall in 2012.
+-
+- License:
+-
+- Permission is hereby granted, free of charge, to any person 
+- obtaining a copy of this software and associated documentation files
+- (the "Software"), to deal in the Software without restriction,
+- including without limitation the rights to use, copy, modify, merge,
+- publish, distribute, sublicense, and/or sell copies of the Software,
+- and to permit persons to whom the Software is furnished to do so,
+- subject to the following conditions:
+-
+- The above copyright notice and this permission notice shall be
+- included in all copies or substantial portions of the Software.
+-
+- The Software may not be used to create training material of any sort,
+- including courses, books, instructional videos, presentations, etc.
+- without the express written consent of David Geary.
+-
+- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+- OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html>
+   <head>
+     <title>Magnifying Glass</title>
+      <meta name='viewport' content='initial-scale=yes, user-scalable=no'/>
+      <meta name='apple-mobile-web-app-capable' content='yes'/>
+      <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'/>
+
+      <!-- 320x460 for iPhone 3GS -->
+      <link rel='apple-touch-startup-image' media='(max-device-width: 480px) and not (-webkit-min-device-pixel-ratio: 2)' href='startup-iphone.png' />
+
+      <!-- 640x920 for retina display -->
+      <link rel='apple-touch-startup-image' media='(max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2)' href='startup-iphone4.png' />
+
+      <!-- iPad Portrait 768x1004 -->
+      <link rel='apple-touch-startup-image' media='(min-device-width: 768px) and (orientation: portrait)' href='startup-iPad-portrait.png' />
+
+      <!-- iPad Landscape 1024x748 -->
+      <link rel='apple-touch-startup-image' media='(min-device-width: 768px) and (orientation: landscape)' href='startup-iPad-landscape.png' />
+
+      <link rel='apple-touch-icon-precomposed' sizes='72x72' href='icon-ipad.png' />
+
+      <style> 
+         body {
+            background: -webkit-gradient(radial, 325 50%, 10, 325 50%, 640, from(rgba(205,205,0,0.75)), to(rgba(72,92,55,0.75)));
+            background-image: -webkit-radial-gradient(center, circle farthest-side, rgba(205, 205, 0, 0.75), rgba(72, 92, 55, 0.75));
+            background-image: -moz-radial-gradient(center, circle farthest-side, rgba(205, 205, 0, 0.75), rgba(72, 92, 55, 0.75));
+            background-image: -o-radial-gradient(center, circle farthest-side, rgba(205, 205, 0, 0.75), rgba(72, 92, 35, 0.75));
+            background-image: radial-gradient(center, circle farthest-side, rgba(205, 205, 0, 0.75), rgba(72, 92, 35, 0.75));
+
+            height: 100%;
+         }
+
+         #backdrop {
+            background: blue;
+         }
+         
+         #controls {
+            position: absolute;
+            left: 60px;
+            top: 0px;
+         }
+
+         @media all and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
+                  #canvas {
+                     position: absolute;
+                     left: 30px;
+                     top: 100px;
+                     -webkit-box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     -moz-box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     border: 1px solid rgb(52, 72, 35);
+                     cursor: pointer;
+                  }
+
+                  #controls {
+                     position: absolute;
+                     left: 60px;
+                     margin-top: 30px;
+                  }
+         }
+
+         @media all and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) {
+                  #canvas {
+                     position: absolute;
+                     left: 35px;
+                     top: 100px;
+                     -webkit-box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     -moz-box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     border: 1px solid rgb(52, 72, 35);
+                     cursor: pointer;
+                  }
+
+                  #controls {
+                     position: absolute;
+                     left: 60px;
+                     margin-top: 30px;
+                  }
+         }
+
+         @media all and (min-device-width: 1025px) {
+                  #canvas {
+                     position: absolute;
+                     top: 60px;
+                     left: 35px;
+                     -webkit-box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     -moz-box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     box-shadow: rgba(60, 60, 70, 0.7) 4px 4px 8px;
+                     border: 1px solid rgb(52, 72, 35);
+                     cursor: pointer;
+                  }
+         
+                  #controls {
+                     margin-top: 5px;
+                     position: absolute;
+                     left: 60px;
+                  }
+         }
+
+         #glassSizeSliderDiv {
+            position: absolute;
+            left: 290px;
+            top: -5px;
+            margin-left: 10px;
+            display: inline;
+            width: 200px;
+            height: 40px;
+         }
+
+         #magnificationSliderDiv {
+            position: absolute;
+            left: 35px;
+            top: -5px;
+            margin-left: 10px;
+            display: inline;
+            width: 200px;
+            height: 40px;
+         }
+
+         #glassSizeCanvas {
+            position: absolute;
+            left: 260px;
+         }
+         
+         #scaleOutput {
+            position: absolute;
+            left: -20px;
+            vertical-align: center;
+            color: rgb(32, 42, 15);
+            font: 18px Arial;
+            text-shadow: 1px 1px 1px rgba(255,205,0,0.5);
+         }
+
+         .slider {
+            margin-top: 5px;
+         }
+
+         #instructions {
+            font: 16px Arial;
+            position: absolute;
+            left: 200px;
+            top: 150px; 
+            background: rgba(250,250,0,0.9);
+            border: thin solid rgb(52,72,35);
+            z-index: 1;
+            width: 650px;
+            height: 250px;
+            padding: 10px;
+            color: rgb(52,72,35);
+            text-shadow: 2px 2px 2px rgba(255,255,235,0.8);
+            -webkit-box-shadow: 4px 4px 8px rgba(60, 60, 70, 0.7);
+            -moz-box-shadow: 4px 4px 8px rgba(60, 60, 70, 0.7);
+            box-shadow: 4px 4px 8px rgba(60, 60, 70, 0.7);
+         }
+
+         #instructions h2 {
+            margin-bottom: 20px;
+            font: 24px arial;
+            color: rgb(52,72,35);
+            text-shadow: 2px 2px 2px rgba(255,255,235,0.8);
+            margin-top: 5px;
+         }
+
+         #instructions-okay {
+            position: absolute;
+            margin-left: 150px;
+            margin-top: 55px;
+            cursor: pointer;
+         }
+
+         #instructions-nomore {
+            position: absolute;
+            margin-top: 55px;
+            margin-left: 350px;
+            cursor: pointer;
+         }
+      </style>
+   </head>
+
+  <body id='body'>
+      <div id='backdrop'>
+         <div id='instructions'>
+            <h2>Instructions</h2>
+            <p>If you run this application directly from your filesystem, as opposed to over the internet, you must circumvent JavaScript's same-domain policy to manipulate the application's image.</p>
+            <p>You do that differently for different browsers; for example, Chrome has a command line argument --allow-file-access-from-files, that relaxes the same-domain policy so the application can manipulate the image. See your browser's documentation for more details.</p>
+
+            <span id='instructions-okay'>Okay</span>
+            <span id='instructions-nomore'>Don't show this again</span>
+         </div>
+         
+         <div id='controls'>
+           <span id='scaleOutput'>1.5</span>
+           <div id='magnificationSliderDiv' class='slider'></div>
+
+            <canvas id='glassSizeCanvas' width='40' height='40'>
+                Canvas not supported
+            </canvas>
+           <div id='glassSizeSliderDiv' class='slider'></div>
+         </div>
+     
+          <canvas id='canvas' width='955' height='611'>
+             Canvas not supported
+          </canvas>
+     </div>
+
+     <script src='../../shared/js/roundedRectangle.js'></script>
+     <script src='../../shared/js/slider.js'></script>
+     <script src='example.js'></script>
+  </body>
+</html>
