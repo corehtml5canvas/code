@@ -38,7 +38,7 @@ var context = document.getElementById('canvas').getContext('2d'),
 drawGrid(context, 'lightgray', 10, 10);
 
 context.lineWidth = 0.5;
-context.font = '32pt Ariel';
+context.font = '32pt Arial';
 
 for (var i=0; i < 100; ++i) {
    circles[i] = { 
