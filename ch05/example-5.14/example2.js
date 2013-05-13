@@ -588,5 +588,5 @@ timeBasedMotionCheckbox.addEventListener('click', function (e) {
 topContext.font = '36px Helvetica';
 drawBackground();
 startTime = +new Date;
-setInterval(animateTopLeft, 1000/60);
+setInterval(animateTopLeft, 1000/120);
 }();
