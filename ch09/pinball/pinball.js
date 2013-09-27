@@ -39,10 +39,6 @@ var game = new Game('pinball', 'gameCanvas'),
 
    showingHighScores = true,
 
-   // Cursor readout.............................................
-   
-   readoutToast = document.getElementById('readoutToast'),
-   
    // Flippers...................................................
 
    LEFT_FLIPPER = 1,
@@ -272,7 +268,7 @@ pausedToast.onclick = function (e) {
    pausedToast.style.display = 'none';
    togglePaused();
 };
-/*
+
 window.onblur = function windowOnBlur() { 
    if (!launching && !loading && !gameOver && !game.paused) {
       game.togglePaused();
@@ -286,7 +282,6 @@ window.onfocus = function windowOnFocus() {
       pausedToast.style.display = game.paused ? 'inline' : 'none';
    }
 };
-*/
 
 // New game ..................................................
 
@@ -297,10 +292,9 @@ newGameButton.onclick = function (e) {
 
 function startNewGame() {
    showPolygonsOnlyToast.style.display = 'block';
-   readoutToast.style.display = 'block';
    highScoreParagraph.style.display = 'none';
    gameOver = false;
-   livesLeft = 1;
+   livesLeft = 3;
    score = 0;
    showingHighScores = false;
    loading = false;
@@ -542,7 +536,7 @@ function detectCollisions() {
                    shape === oneHundredBumperLeft  ||
                    shape === oneHundredBumperRight ||
                    shape === fiveHundredBumper) {
-                  //game.playSound('bumper');
+                  game.playSound('bumper');
                   bounce(mtv, shape, 4.5);
                   bumperLit = shape;
                   return true;
@@ -738,16 +732,16 @@ game.startAnimate = function (time) {
    if (loading || game.paused || launching)
       return;
 
-   if (!gameOver && livesLeft === 0) {
-      over();
-      return;
-   }
 
    if (ballOutOfPlay) {
       ballOutOfPlay = false;
       prepareForLaunch();
       brieflyShowTryAgainImage(2000);
       livesLeft--;
+
+      if (!gameOver && livesLeft === 0) {
+         over();
+      }
       return;
    }
 
@@ -963,7 +957,7 @@ game.addKeyListener(
          if ( !launching && !gameOver) {
             rightFlipperRiseTimer.start();
             rightFlipperAngle = 0;
-            //game.playSound('flipper');
+            game.playSound('flipper');
          }
       }
    }
@@ -976,7 +970,7 @@ game.addKeyListener(
          if ( !launching && !gameOver) {
             leftFlipperRiseTimer.start();
             leftFlipperAngle = 0;
-            //game.playSound('flipper');
+            game.playSound('flipper');
          }
       }
    }
@@ -1312,11 +1306,6 @@ function drawVerticalLine (x) {
    game.context.stroke();
 }
 
-game.context.canvas.onmousemove = function (e) {
-   var loc = windowToCanvas(e);
-   readoutToast.innerText = '(' + loc.x.toFixed(0) + ', ' + loc.y.toFixed(0) + ')';
-};
-
 showPolygonsOnlyCheckbox.onclick = function (e) {
    showPolygonsOnly = showPolygonsOnlyCheckbox.checked;
    if (showPolygonsOnly) {
@@ -1432,7 +1421,6 @@ var interval = setInterval( function (e) {
 
       showPolygonsOnlyToast.style.display = 'block';
       showPolygonsOnlyToast.style.left = '290px';
-      readoutToast.style.display = 'block';
       scoreToast.style.display = 'inline';
 
       launching = true;
@@ -1443,7 +1431,7 @@ var interval = setInterval( function (e) {
 
       ballSprite.visible = true;
       actuatorSprite.visible = true;
-      //game.playSound('jingle');
+      //game.playSound('pinball');
 
       for (var i=0; i < LAUNCH_STEPS; ++i) {
          launchImages[i] = new Image();
