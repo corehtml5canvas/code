@@ -367,7 +367,7 @@ function drawPolygon(polygon, angle) {
    context.stroke();
 
    if (fillCheckbox.checked) {
-      context.fill(context);
+      context.fill();
    }
 
    context.restore();
