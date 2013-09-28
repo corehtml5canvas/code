@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!--
+- Copyright (C) 2012 David Geary. This code is from the book
+- Core HTML5 Canvas, published by Prentice-Hall in 2012.
+-
+- License:
+-
+- Permission is hereby granted, free of charge, to any person 
+- obtaining a copy of this software and associated documentation files
+- (the "Software"), to deal in the Software without restriction,
+- including without limitation the rights to use, copy, modify, merge,
+- publish, distribute, sublicense, and/or sell copies of the Software,
+- and to permit persons to whom the Software is furnished to do so,
+- subject to the following conditions:
+-
+- The above copyright notice and this permission notice shall be
+- included in all copies or substantial portions of the Software.
+-
+- The Software may not be used to create training material of any sort,
+- including courses, books, instructional videos, presentations, etc.
+- without the express written consent of David Geary.
+-
+- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+- OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+   <head>
+     <title>Time-based Motion</title>
+
+      <style> 
+         body {
+            background: #dddddd;
+            width: 770px;
+         }
+
+         .canvas {
+            background: #ffffff;
+            -webkit-box-shadow: rgba(0,0,0,0.5) 5px 5px 20px;
+            -moz-box-shadow: rgba(0,0,0,0.5) 5px 5px 20px;
+            box-shadow: rgba(0,0,0,0.5) 5px 5px 20px;
+            margin-bottom: 10px;
+         }
+         
+         #canvas {
+            position: absolute;
+            left: 0px;
+            top: 20px;
+            margin: 20px;
+            border: thin inset rgba(100,150,230,0.5);
+         }
+
+         .floatingControls {
+            font-family: Droid Sans, Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            color: slateblue;
+            padding: 10px;
+            margin: 10px;
+            width: 12em;
+            background: rgba(255, 255, 255, 0.3);
+            border: thin solid rgba(0, 0, 0, 0.6);
+            -webkit-box-shadow: rgba(0,0,0,0.5) 5px 5px 20px;
+            -moz-box-shadow: rgba(0,0,0,0.5) 5px 5px 20px;
+            box-shadow: rgba(0,0,0,0.5) 5px 5px 20px;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+         }
+         
+         #controls {
+            margin-top: 10px;
+            margin-left: 15px;
+         }
+      </style>
+   </head>
+
+  <body>
+    <div id='controls'>
+      <div class='floatingControls' id='timeBasedMotionControls'>
+         <input type='checkbox' id='timeBasedMotionCheckbox'/>Time-based Motion&nbsp;
+      </div>
+
+      <input type='button' id='topAnimateButton' value='Animate'
+                  style='font-size: 0.75em; position: absolute; left: 670px; top: 70px; z-index: 2;'/>
+            
+    </div>
+
+    <canvas id='topCanvas' class='canvas' width='750' height='600'>
+      Canvas not supported
+    </canvas>
+
+    <script src='example2.js'></script>
+  </body>
+</html>
