@@ -34,6 +34,7 @@ var canvas = document.getElementById('canvas'),
     eraseAllButton = document.getElementById('eraseAllButton'),
     strokeStyleSelect = document.getElementById('strokeStyleSelect'),
     fillStyleSelect = document.getElementById('fillStyleSelect'),
+    lineWidthSelect = document.getElementById('lineWidthSelect'),
     fillCheckbox = document.getElementById('fillCheckbox'),
     guidewireCheckbox = document.getElementById('guidewireCheckbox'),
 
@@ -215,6 +216,11 @@ fillStyleSelect.onchange = function (e) {
    context.fillStyle = fillStyleSelect.value;
 };
 
+lineWidthSelect.onchange = function (e) {
+    context.lineWidth = lineWidthSelect.value;
+};
+
+
 guidewireCheckbox.onchange = function (e) {
    guidewires = guidewireCheckbox.checked;
 };
@@ -223,4 +229,5 @@ guidewireCheckbox.onchange = function (e) {
 
 context.strokeStyle = strokeStyleSelect.value;
 context.fillStyle = fillStyleSelect.value;
+context.lineWidth = lineWidthSelect.value;
 drawGrid('lightgray', 10, 10);
