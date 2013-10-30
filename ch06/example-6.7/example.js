@@ -73,7 +73,7 @@ function pauseAnimation() {
 function startAnimation() {
    animateButton.value = 'Pause';
    paused = false;
-   lastAdvance = +new Date();
+   lastAdvance = 0;
    window.requestNextAnimationFrame(animate);
 }
 
