@@ -35,7 +35,6 @@ var canvas = document.getElementById('canvas'),
     launchVelocityOutput = document.getElementById('launchVelocityOutput'),
     launchAngleOutput = document.getElementById('launchAngleOutput'),
 
-    elapsedTime = undefined,
     launchTime = undefined,
 
     score = 0,
@@ -129,6 +128,7 @@ var canvas = document.getElementById('canvas'),
               elapsedFlightTime;
 
           if (ballInFlight) {
+             if (launchTime === undefined) launchTime = time;
              elapsedFrameTime  = (time - this.lastTime)/1000,
              elapsedFlightTime = (time - launchTime)/1000;
 
@@ -158,7 +158,7 @@ var canvas = document.getElementById('canvas'),
            else              lastScore = 2;
 
            score += lastScore;
-           scoreboard.innerText = score;
+           scoreboard.innerHTML = score;
        },
        
        execute: function (bucket, context, time) {
@@ -266,7 +266,7 @@ canvas.onmousedown = function(e) {
      ball.velocityY = launchVelocity * Math.sin(launchAngle);
      ballInFlight = true;
      threePointer = false;
-     launchTime = +new Date();
+     launchTime = undefined;
    }
 };
 
@@ -286,15 +286,14 @@ canvas.onmousemove = function (e) {
       launchAngle = Math.atan(parseFloat(deltaY) / parseFloat(deltaX));
       launchVelocity = 4 * deltaY / Math.sin(launchAngle) / pixelsPerMeter;
 
-      launchVelocityOutput.innerText = launchVelocity.toFixed(2);
-      launchAngleOutput.innerText = (launchAngle * 180/Math.PI).toFixed(2);
+      launchVelocityOutput.innerHTML = launchVelocity.toFixed(2);
+      launchAngleOutput.innerHTML = (launchAngle * 180/Math.PI).toFixed(2);
    }
 };
 
 // Animation Loop................................................
 
 function animate(time) {
-   elapsedTime = (time - launchTime) / 1000;
    context.clearRect(0,0,canvas.width,canvas.height);
    
    if (!ballInFlight) {
