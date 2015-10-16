@@ -367,7 +367,9 @@ canvas.onmousemove = function (e) {
 
 // Animation Loop................................................
 
-function animate(time) {
+function animate() {
+   var time = Date.now();
+
    elapsedTime = (time - launchTime) / 1000;
    context.clearRect(0,0,canvas.width,canvas.height);
 
@@ -423,4 +425,4 @@ bucketImage.onload = function (e) {
    bucket.height = BUCKET_HEIGHT;
 };
 
-animate(+new Date());
+animate();
